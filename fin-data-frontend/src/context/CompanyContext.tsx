@@ -22,6 +22,9 @@ export const CompanyContextProvider = ({ children }) => {
         console.error('Error fetching data:', error);
     }
   }
+
+  // const invokeGetCompanyFinancials = async (companyInfo: any) => {};
+
   // Provide the context value to children components
   const state = {
     companyProfile,
