@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { CompanyContext } from "./context/CompanyContext.tsx";
 
 type Props = {
     companyProfile: any;
 };
 
 const CompanyCard: React.FC<Props> = (props) => {
+    const { api } = useContext(CompanyContext);
+    const { getCompanyFinancials } = api;
     const { companyProfile } = props;
-
     const { companyName, symbol, price, volAvg, website } = companyProfile;
+
+    const financialInsightParams = {
+        symbol: companyProfile.symbol,
+        incomeParams: {
+            period: 'annual',
+        },
+        balanceParams: {
+            period: 'annual',
+        },
+        cashFlowParams: {
+            period: 'annual',
+        }
+    };
+
     return (
     <Card sx={{ minWidth: 275, mt: 2 }}>
         <CardContent>
@@ -35,7 +51,7 @@ const CompanyCard: React.FC<Props> = (props) => {
             <a>
                 <Button size="small" href={website}>Learn More</Button>
             </a>
-            <Button size="small">Financial Insights</Button>
+            <Button size="small" onClick={() => getCompanyFinancials(financialInsightParams)}>Financial Insights</Button>
         </CardActions>
     </Card>
     )

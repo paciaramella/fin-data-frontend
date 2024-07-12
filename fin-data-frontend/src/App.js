@@ -1,22 +1,26 @@
 import React, { useState, useContext } from "react";
 import TextField from "@mui/material/TextField";
 import { Container, Typography, Box, Button } from "@mui/material"; // Importing additional MUI components if needed
-import { CompanyContext, CompanyContextProvider} from './context/CompanyContext.tsx';
+import {
+  CompanyContext,
+  CompanyContextProvider,
+} from "./context/CompanyContext.tsx";
 import CompanyCard from "./CompanyCard.tsx";
+import FinancialInsights from "./FinancialInsights.tsx";
 const MainComponent = () => {
   const { state, api } = useContext(CompanyContext);
-  const { companyProfile } = state;
+  const { companyProfile, showInsights } = state;
   const { getCompanyProfile, setCompanyProfile } = api;
-  const [symbolSearch, setSymbolSearch] = useState('');
+  const [symbolSearch, setSymbolSearch] = useState("");
 
   const clearSearch = () => {
-    setSymbolSearch('');
+    setSymbolSearch("");
     setCompanyProfile({});
   };
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ mt: 3 }} style={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ mt: 3 }} style={{ display: "flex", flexDirection: "column" }}>
         <Typography variant="h5" gutterBottom>
           Financial Data App
         </Typography>
@@ -25,7 +29,7 @@ const MainComponent = () => {
           variant="outlined"
           fullWidth
           value={symbolSearch}
-          onChange={((e) => setSymbolSearch(e.target.value))}
+          onChange={(e) => setSymbolSearch(e.target.value)}
         />
         {companyProfile?.companyName ? (
           <>
@@ -47,8 +51,9 @@ const MainComponent = () => {
             onClick={() => getCompanyProfile(symbolSearch)}
           >
             Submit
-           </Button>
+          </Button>
         )}
+        {showInsights && <FinancialInsights />}
       </Box>
     </Container>
   );
