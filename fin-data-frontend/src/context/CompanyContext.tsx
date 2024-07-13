@@ -105,10 +105,10 @@ export const CompanyContextProvider = ({ children }) => {
         params: cashFlowParams,
       })
     );
-    const responses = await Promise.all(promises);
-    const incomeStatementRes = responses[0];
-    const balanceSheetStatementRes = responses[1];
-    const cashFlowStatementRes = responses[2];
+    const responses: Array<any> = await Promise.all(promises);
+    const incomeStatementRes = responses[0].data;
+    const balanceSheetStatementRes = responses[1].data;
+    const cashFlowStatementRes = responses[2].data;
     setIncomeStatements(incomeStatementRes);
     setBalanceSheets(balanceSheetStatementRes);
     setCashFlows(cashFlowStatementRes);
