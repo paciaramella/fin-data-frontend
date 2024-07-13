@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { CompanyContext } from "../context/CompanyContext.tsx";
 import { AppBar, Tabs, Tab, Button, Typography } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
 
 type Props = {};
 const FinancialInsights: React.FC<Props> = () => {
@@ -106,13 +107,17 @@ const FinancialInsights: React.FC<Props> = () => {
 
   return (
     <Box style={{ padding: "16px" }}>
+      <CssBaseline />
       <AppBar position="static">
         <Tabs
           value={tabIndex}
           onChange={handleTabChange}
           aria-label="Statistics Tabs"
+          TabIndicatorProps={{
+            style: { background: "white" }, // Example for changing the indicator color
+          }}
         >
-          <Tab label="Income Statements" color="#FFFFFF" />
+          <Tab label="Income Statements" />
           <Tab label="Balance Sheets" />
           <Tab label="Cash Flow Statements" />
         </Tabs>

@@ -13,8 +13,18 @@ import {
 } from "./context/CompanyContext.tsx";
 import CompanyCard from "./components/CompanyCard.tsx";
 import FinancialInsights from "./components/FinancialInsights.tsx";
-import { theme } from "./theme.tsx";
+import getLPTheme from "./theme.tsx";
+import { createTheme } from "@mui/material/styles";
+import AppAppBar from "./components/AppAppBar.tsx";
+
 const MainComponent = () => {
+  const [mode, setMode] = React.useState("light");
+  const LPtheme = createTheme(getLPTheme(mode));
+
+  const toggleColorMode = () => {
+    setMode((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
   const { state, api } = useContext(CompanyContext);
   const { companyProfile, showInsights } = state;
   const { getCompanyProfile, setCompanyProfile } = api;
@@ -26,8 +36,12 @@ const MainComponent = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="sm">
+    <ThemeProvider theme={LPtheme}>
+      <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+      <Container
+        maxWidth="sm"
+        sx={{ bgcolor: "background.default", padding: "100px" }}
+      >
         <Box
           sx={{ mt: 3 }}
           style={{ display: "flex", flexDirection: "column" }}
@@ -74,10 +88,8 @@ const MainComponent = () => {
 function App() {
   return (
     <CompanyContextProvider>
-      <div className="App">
-        <main>
-          <MainComponent />
-        </main>
+      <div style={{ bgcolor: "background.default" }}>
+        <MainComponent />
       </div>
     </CompanyContextProvider>
   );
