@@ -19,16 +19,20 @@ const CompanyCard: React.FC<Props> = (props) => {
   const financialInsightParams = {
     symbol: companyProfile.symbol,
     incomeParams: {
-      period: "annual",
+      period: "quarter",
+      limit: 100,
     },
     balanceParams: {
-      period: "annual",
+      period: "quarter",
+      limit: 100,
     },
     cashFlowParams: {
-      period: "annual",
+      period: "quarter",
+      limit: 100,
     },
     keyMetricsParams: {
       period: "quarter",
+      limit: 100,
     },
   };
 

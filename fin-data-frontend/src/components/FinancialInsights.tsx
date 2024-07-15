@@ -87,9 +87,6 @@ const FinancialInsights: React.FC<Props> = () => {
     return { id: index, ...metrics };
   });
 
-  Object.keys(keyMetrics[0]).map((metric: string) => {
-    return { field: metric, headerName: metric, width: 150 };
-  });
   const columns: GridColDef[] = Object.keys(keyMetrics[0]).map(
     (metric: string) => {
       return { field: metric, headerName: metric, width: 150 };
@@ -119,17 +116,11 @@ const FinancialInsights: React.FC<Props> = () => {
       )}
       {tabIndex === 1 && (
         <Grid container spacing={2}>
-          {/* Grid Item 1 */}
           <Grid item xs={4} sx={{ overflow: "auto" }}>
             <RevenueChart color={"#ffcccb"} />
           </Grid>
-          {/* Grid Item 2 */}
           <Grid item xs={4} sx={{ overflow: "auto" }}>
             <GrossProfitChart color={"#87ceeb"} />
-          </Grid>
-          {/* Grid Item 3 */}
-          <Grid item xs={4}>
-            <RevenueChart color={"#8884d8"} />
           </Grid>
         </Grid>
       )}
