@@ -4,24 +4,15 @@ import { Box } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { CompanyContext } from "../context/CompanyContext.tsx";
 import { AppBar, Tabs, Tab, Button, Typography } from "@mui/material";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+
 import CssBaseline from "@mui/material/CssBaseline";
 
 type Props = {};
 const FinancialInsights: React.FC<Props> = () => {
   const { state, api } = useContext(CompanyContext);
-  const { incomeStatements, balanceSheets, cashFlows } = state;
-  const mostRecentIncomeStatement = incomeStatements[0];
-  const mostRecentBalanceSheet = balanceSheets[0];
-  const mostRecentCashFlow = cashFlows[0];
-
-  const revenue = mostRecentIncomeStatement.revenue;
-  const grossProfit = mostRecentIncomeStatement.grossProfit;
-  const opIncome = mostRecentIncomeStatement.operatingIncome;
-  const netIncome = mostRecentIncomeStatement.netIncome;
-  const eps = mostRecentIncomeStatement.eps;
-
+  const { incomeStatements, keyMetrics } = state;
   const [tabIndex, setTabIndex] = useState(0);
-
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
     // Handle tab change logic here, such as loading different statistics data
@@ -92,21 +83,21 @@ const FinancialInsights: React.FC<Props> = () => {
       </Box>
     );
   };
-  const allOperatingIncomes = incomeStatements.map((statement: any) => {
-    return statement.operatingIncome;
-  });
-  const allNetIncomes = incomeStatements.map((statement: any) => {
-    return statement.netIncome;
+  const rows: GridRowsProp = keyMetrics.map((metrics: any, index: number) => {
+    return { id: index, ...metrics };
   });
 
-  const truncateLabel = (label, maxLength = 3) => {
-    return label.length > maxLength
-      ? `${label.substring(0, maxLength)}...`
-      : label;
-  };
+  Object.keys(keyMetrics[0]).map((metric: string) => {
+    return { field: metric, headerName: metric, width: 150 };
+  });
+  const columns: GridColDef[] = Object.keys(keyMetrics[0]).map(
+    (metric: string) => {
+      return { field: metric, headerName: metric, width: 150 };
+    }
+  );
 
   return (
-    <Box style={{ padding: "16px" }}>
+    <Box style={{ padding: "16px", justifyContent: "center" }}>
       <CssBaseline />
       <AppBar position="static">
         <Tabs
@@ -117,25 +108,31 @@ const FinancialInsights: React.FC<Props> = () => {
             style: { background: "white" }, // Example for changing the indicator color
           }}
         >
+          <Tab label="Key Metrics" />
           <Tab label="Income Statements" />
-          <Tab label="Balance Sheets" />
-          <Tab label="Cash Flow Statements" />
         </Tabs>
       </AppBar>
-      <Grid container spacing={2}>
-        {/* Grid Item 1 */}
-        <Grid item xs={4} sx={{ overflow: "auto" }}>
-          <RevenueChart color={"#ffcccb"} />
+      {tabIndex === 0 && (
+        <div style={{ height: 300, width: "100%" }}>
+          <DataGrid rows={rows} columns={columns} />
+        </div>
+      )}
+      {tabIndex === 1 && (
+        <Grid container spacing={2}>
+          {/* Grid Item 1 */}
+          <Grid item xs={4} sx={{ overflow: "auto" }}>
+            <RevenueChart color={"#ffcccb"} />
+          </Grid>
+          {/* Grid Item 2 */}
+          <Grid item xs={4} sx={{ overflow: "auto" }}>
+            <GrossProfitChart color={"#87ceeb"} />
+          </Grid>
+          {/* Grid Item 3 */}
+          <Grid item xs={4}>
+            <RevenueChart color={"#8884d8"} />
+          </Grid>
         </Grid>
-        {/* Grid Item 2 */}
-        <Grid item xs={4} sx={{ overflow: "auto" }}>
-          <GrossProfitChart color={"#87ceeb"} />
-        </Grid>
-        {/* Grid Item 3 */}
-        <Grid item xs={4}>
-          <RevenueChart color={"#8884d8"} />
-        </Grid>
-      </Grid>
+      )}
     </Box>
   );
 };

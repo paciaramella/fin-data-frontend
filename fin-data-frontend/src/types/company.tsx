@@ -4,6 +4,7 @@ export type FinancialInsightsInfo = {
   incomeParams: BasicSearchParams;
   balanceParams: BasicSearchParams;
   cashFlowParams: BasicSearchParams;
+  keyMetricsParams: BasicSearchParams;
 };
 
 export type FinancialInsightsRes = {

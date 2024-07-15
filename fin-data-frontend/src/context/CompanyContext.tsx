@@ -8,6 +8,7 @@ interface CompanyState {
   incomeStatements: Array<any>;
   balanceSheets: Array<any>;
   cashFlows: Array<any>;
+  keyMetrics: Array<any>;
 }
 
 interface CompanyApi {
@@ -17,6 +18,7 @@ interface CompanyApi {
   setIncomeStatements: (incomeStatements: Array<any>) => void;
   setBalanceSheets: (balanceSheets: Array<any>) => void;
   setCashFlows: (cashFlows: Array<any>) => void;
+  setKeyMetrics: (keyMetrics: Array<any>) => void;
 
   // api functions
   getCompanyProfile: (symbol: string) => Promise<void>;
@@ -34,6 +36,7 @@ const defaultCompanyState: CompanyState = {
   incomeStatements: [],
   balanceSheets: [],
   cashFlows: [],
+  keyMetrics: [],
 };
 
 const defaultCompanyApi: CompanyApi = {
@@ -42,6 +45,7 @@ const defaultCompanyApi: CompanyApi = {
   setIncomeStatements: (incomeStatements: any) => {},
   setBalanceSheets: (balanceSheets: Array<any>) => {},
   setCashFlows: (cashFlows: Array<any>) => {},
+  setKeyMetrics: (keyMetrics: Array<any>) => {},
   getCompanyProfile: async (symbol: string) => {},
   getCompanyFinancials: async (companyInfo: FinancialInsightsInfo) => {},
 };
@@ -64,6 +68,7 @@ export const CompanyContextProvider = ({ children }) => {
     incomeStatements: defaultIncomeStatements,
     balanceSheets: defaultBalanceSheets,
     cashFlows: defaultCashFlows,
+    keyMetrics: defaultKeyMetrics,
   } = defaultCompanyState;
   const [companyProfile, setCompanyProfile] = useState(defaultCompanyProfile);
   const [showInsights, setShowInsights] = useState(defaultShowInsights);
@@ -73,6 +78,7 @@ export const CompanyContextProvider = ({ children }) => {
   const [balanceSheets, setBalanceSheets] =
     useState<Array<any>>(defaultBalanceSheets);
   const [cashFlows, setCashFlows] = useState<Array<any>>(defaultCashFlows);
+  const [keyMetrics, setKeyMetrics] = useState<Array<any>>(defaultKeyMetrics);
 
   const invokeGetCompanyProfile = async (symbol: string) => {
     try {
@@ -86,8 +92,14 @@ export const CompanyContextProvider = ({ children }) => {
   const invokeGetCompanyFinancials = async (
     companyInfo: FinancialInsightsInfo
   ) => {
-    const { cik, symbol, incomeParams, balanceParams, cashFlowParams } =
-      companyInfo;
+    const {
+      cik,
+      symbol,
+      incomeParams,
+      balanceParams,
+      cashFlowParams,
+      keyMetricsParams,
+    } = companyInfo;
     const promises = [];
     promises.push(
       await axios.get(`${url}/income-statement/${symbol ? symbol : cik}`, {
@@ -105,13 +117,20 @@ export const CompanyContextProvider = ({ children }) => {
         params: cashFlowParams,
       })
     );
+    promises.push(
+      await axios.get(`${url}/key-metrics/${symbol}`, {
+        params: keyMetricsParams,
+      })
+    );
     const responses: Array<any> = await Promise.all(promises);
     const incomeStatementRes = responses[0].data;
     const balanceSheetStatementRes = responses[1].data;
     const cashFlowStatementRes = responses[2].data;
+    const keyMetricsRes = responses[3].data;
     setIncomeStatements(incomeStatementRes);
     setBalanceSheets(balanceSheetStatementRes);
     setCashFlows(cashFlowStatementRes);
+    setKeyMetrics(keyMetricsRes);
     setShowInsights(true);
   };
 
@@ -121,6 +140,7 @@ export const CompanyContextProvider = ({ children }) => {
     incomeStatements,
     balanceSheets,
     cashFlows,
+    keyMetrics,
   };
 
   const api = {
@@ -129,6 +149,7 @@ export const CompanyContextProvider = ({ children }) => {
     setIncomeStatements,
     setBalanceSheets,
     setCashFlows,
+    setKeyMetrics,
     getCompanyProfile: invokeGetCompanyProfile,
     getCompanyFinancials: invokeGetCompanyFinancials,
   };

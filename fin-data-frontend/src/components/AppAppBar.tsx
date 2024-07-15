@@ -73,53 +73,6 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
           })}
         >
           <Box
-            sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}
-          >
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection("features")}
-              >
-                Features
-              </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection("testimonials")}
-              >
-                Testimonials
-              </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection("highlights")}
-              >
-                Highlights
-              </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection("pricing")}
-              >
-                Pricing
-              </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection("faq")}
-                sx={{ minWidth: 0 }}
-              >
-                FAQ
-              </Button>
-            </Box>
-          </Box>
-          <Box
             sx={{
               display: { xs: "none", md: "flex" },
               gap: 0.5,
@@ -127,12 +80,6 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
             }}
           >
             <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-            <Button color="primary" variant="text" size="small">
-              Sign in
-            </Button>
-            <Button color="primary" variant="contained" size="small">
-              Sign up
-            </Button>
           </Box>
           <Box sx={{ display: { sm: "flex", md: "none" } }}>
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>

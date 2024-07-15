@@ -27,6 +27,9 @@ const CompanyCard: React.FC<Props> = (props) => {
     cashFlowParams: {
       period: "annual",
     },
+    keyMetricsParams: {
+      period: "quarter",
+    },
   };
 
   return (
