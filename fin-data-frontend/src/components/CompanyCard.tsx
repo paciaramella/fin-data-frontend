@@ -37,7 +37,7 @@ const CompanyCard: React.FC<Props> = (props) => {
   };
 
   return (
-    <Card sx={{ minWidth: 275, mt: 2 }}>
+    <Card sx={{ minWidth: 275, mt: 2, bgcolor: "background.default" }}>
       <CardContent>
         <Typography sx={{ fontSize: 16 }} gutterBottom>
           {companyName}

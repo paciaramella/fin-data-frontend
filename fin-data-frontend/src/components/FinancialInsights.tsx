@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { Box } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { CompanyContext } from "../context/CompanyContext.tsx";
 import { AppBar, Tabs, Tab, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
-
 import CssBaseline from "@mui/material/CssBaseline";
 
 type Props = {};
@@ -87,15 +86,40 @@ const FinancialInsights: React.FC<Props> = () => {
     return { id: index, ...metrics };
   });
 
-  const columns: GridColDef[] = Object.keys(keyMetrics[0]).map(
-    (metric: string) => {
+  const pinnedColumns = [
+    { field: "symbol", headerName: "Symbol", width: 150, pinned: "left" },
+    { field: "date", headerName: "Date", width: 150, pinned: "left" },
+  ];
+
+  const otherColummns = Object.keys(keyMetrics[0])
+    .filter((metric: string) => metric !== "symbol" && metric !== "date")
+    .map((metric: string) => {
       return { field: metric, headerName: metric, width: 150 };
+    });
+
+  const columns: GridColDef[] = [...pinnedColumns, ...otherColummns];
+
+  const scrollToSection = (sectionId: string) => {
+    const sectionElement = document.getElementById(sectionId);
+    const offset = 128;
+    if (sectionElement) {
+      const targetScroll = sectionElement.offsetTop - offset;
+      sectionElement.scrollIntoView({ behavior: "smooth" });
+      window.scrollTo({
+        top: targetScroll,
+        behavior: "smooth",
+      });
     }
-  );
+  };
+
+  useEffect(() => {
+    if (tabIndex == 0) {
+      scrollToSection("Key Metrics");
+    }
+  }, [tabIndex]);
 
   return (
     <Box style={{ padding: "16px", justifyContent: "center" }}>
-      <CssBaseline />
       <AppBar position="static">
         <Tabs
           value={tabIndex}
@@ -110,8 +134,25 @@ const FinancialInsights: React.FC<Props> = () => {
         </Tabs>
       </AppBar>
       {tabIndex === 0 && (
-        <div style={{ height: 300, width: "100%" }}>
-          <DataGrid rows={rows} columns={columns} />
+        <div style={{ height: 1000, width: "100%" }} id={"Key Metrics"}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              columns: {
+                columnVisibilityModel: {
+                  symbol: true,
+                  date: true,
+                  // Set visibility for other columns as needed
+                },
+              },
+            }}
+            columnVisibilityModel={{
+              symbol: true,
+              date: true,
+              // Set visibility for other columns as needed
+            }}
+          />
         </div>
       )}
       {tabIndex === 1 && (
@@ -121,6 +162,9 @@ const FinancialInsights: React.FC<Props> = () => {
           </Grid>
           <Grid item xs={4} sx={{ overflow: "auto" }}>
             <GrossProfitChart color={"#87ceeb"} />
+          </Grid>
+          <Grid item xs={4}>
+            <RevenueChart color={"#8884d8"} />
           </Grid>
         </Grid>
       )}

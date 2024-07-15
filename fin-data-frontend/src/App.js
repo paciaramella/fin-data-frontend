@@ -16,9 +16,11 @@ import FinancialInsights from "./components/FinancialInsights.tsx";
 import getLPTheme from "./theme.tsx";
 import { createTheme } from "@mui/material/styles";
 import AppAppBar from "./components/AppAppBar.tsx";
+import CssBaseline from "@mui/material/CssBaseline";
+// import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 
 const MainComponent = () => {
-  const [mode, setMode] = React.useState("light");
+  const [mode, setMode] = React.useState("dark");
   const LPtheme = createTheme(getLPTheme(mode));
 
   const toggleColorMode = () => {
@@ -37,6 +39,7 @@ const MainComponent = () => {
 
   return (
     <ThemeProvider theme={LPtheme}>
+      <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
       <Container
         maxWidth="sm"
