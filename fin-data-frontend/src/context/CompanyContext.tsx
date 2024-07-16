@@ -44,6 +44,8 @@ const defaultSimpleQuote: SimpleQuote = {
   price: 0,
   volume: 0,
   symbol: "",
+  change: "",
+  changesPercentage: "",
 };
 const defaultCompanyApi: CompanyApi = {
   setCompanyProfile: (companyProfile: any) => {},
@@ -100,7 +102,7 @@ export const CompanyContextProvider = ({ children }) => {
     symbol: string
   ): Promise<SimpleQuote> => {
     try {
-      const response = await axios.get(`${url}/quote-short/${symbol}`);
+      const response = await axios.get(`${url}/company/stock/${symbol}`);
       return response.data[0];
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -108,6 +110,8 @@ export const CompanyContextProvider = ({ children }) => {
         price: 0,
         volume: 0,
         symbol: "",
+        change: "",
+        changesPercentage: "",
       };
     }
   };

@@ -16,6 +16,9 @@ const CompanyCard: React.FC<Props> = (props) => {
   const { companyProfile } = props;
   const { companyName, symbol, price, volAvg, website } = companyProfile;
   const [livePrice, setLivePrice] = useState(price);
+  const [liveChange, setLiveChange] = useState("");
+  const [livePctChange, setLivePctChange] = useState("");
+
   const financialInsightParams = {
     symbol: companyProfile.symbol,
     incomeParams: {
@@ -39,21 +42,25 @@ const CompanyCard: React.FC<Props> = (props) => {
   useEffect(() => {
     // resets live stock price every second
     const interval = setInterval(async () => {
-      const newPrice = (await getCompanyPrice(symbol)).price;
-      console.log("newPrice", newPrice);
+      const res = await getCompanyPrice(symbol);
+      const newPrice = res.price;
+      const newChange = res.change;
+      const newPercentageChange = res.changesPercentage;
       setLivePrice(newPrice);
+      setLiveChange(newChange);
+      setLivePctChange(newPercentageChange);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <Card sx={{ minWidth: 275, mt: 2, bgcolor: "background.default" }}>
+    <Card sx={{ width: "85%", mt: 2, bgcolor: "background.default" }}>
       <CardContent>
         <Typography sx={{ fontSize: 16 }} variant="h1" gutterBottom>
           {companyName} - {symbol}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
-        <Typography variant="h2">{`$${livePrice}`}</Typography>
+        <Typography variant="h2">{`$${livePrice} ${liveChange} (${livePctChange}%)`}</Typography>
         <Typography variant="body1">{`Volume: ${volAvg}`}</Typography>
       </CardContent>
       <CardActions sx={{ display: "flex", flexDirection: "column" }}>

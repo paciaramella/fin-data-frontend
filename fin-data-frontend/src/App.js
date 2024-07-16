@@ -17,7 +17,6 @@ import getLPTheme from "./theme.tsx";
 import { createTheme } from "@mui/material/styles";
 import AppAppBar from "./components/AppAppBar.tsx";
 import CssBaseline from "@mui/material/CssBaseline";
-// import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 
 const MainComponent = () => {
   const [mode, setMode] = React.useState("dark");
@@ -27,28 +26,14 @@ const MainComponent = () => {
     setMode((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
-  const { state, api } = useContext(CompanyContext);
+  const { state } = useContext(CompanyContext);
   const { companyProfile, showInsights } = state;
-  const { getCompanyProfile, setCompanyProfile } = api;
-  const [symbolSearch, setSymbolSearch] = useState("");
-
-  const clearSearch = () => {
-    setSymbolSearch("");
-    setCompanyProfile({});
-  };
-
   return (
     <ThemeProvider theme={LPtheme}>
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
-      <Container
-        maxWidth="sm"
-        sx={{ bgcolor: "background.default", padding: "100px" }}
-      >
-        <Box
-          sx={{ mt: 3 }}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
+      <Container sx={{ bgcolor: "background.default", padding: "100px" }}>
+        <Box style={{ display: "flex", flexDirection: "column" }}>
           {companyProfile?.companyName && (
             <>
               <CompanyCard companyProfile={companyProfile} />
