@@ -5,7 +5,8 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { CompanyContext } from "../context/CompanyContext.tsx";
 import { AppBar, Tabs, Tab, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
-import CssBaseline from "@mui/material/CssBaseline";
+import ChatbotSidebar from "./ChatbotSidebar.tsx";
+import axios from "axios";
 
 type Props = {};
 const FinancialInsights: React.FC<Props> = () => {
@@ -16,6 +17,25 @@ const FinancialInsights: React.FC<Props> = () => {
     setTabIndex(newValue);
     // Handle tab change logic here, such as loading different statistics data
   };
+
+  // const [definition, setDefinition] = useState("");
+  // const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // const handleHeaderClick = async (field) => {
+  //   try {
+  //     const response = await axios.post("http://localhost:3001/getDefinition", {
+  //       metric: field,
+  //     });
+  //     setDefinition(response.data.definition);
+  //     setSidebarOpen(true);
+  //   } catch (error) {
+  //     console.error("Error fetching definition:", error);
+  //   }
+  // };
+
+  // const handleColumnHeaderClick = (params) => {
+  //   handleHeaderClick(params.colDef.headerName);
+  // };
 
   const allRevenues = incomeStatements.map((statement: any) => {
     return {
@@ -134,7 +154,7 @@ const FinancialInsights: React.FC<Props> = () => {
         </Tabs>
       </AppBar>
       {tabIndex === 0 && (
-        <div style={{ height: 1000, width: "100%" }} id={"Key Metrics"}>
+        <div style={{ height: 630, width: "100%" }} id={"Key Metrics"}>
           <DataGrid
             rows={rows}
             columns={columns}
@@ -143,15 +163,20 @@ const FinancialInsights: React.FC<Props> = () => {
                 columnVisibilityModel: {
                   symbol: true,
                   date: true,
-                  // Set visibility for other columns as needed
+                },
+              },
+              pagination: {
+                paginationModel: {
+                  pageSize: 10, // Set the default page size here
                 },
               },
             }}
+            pageSizeOptions={[10, 25, 50]} // Options for page size
             columnVisibilityModel={{
               symbol: true,
               date: true,
-              // Set visibility for other columns as needed
             }}
+            // onColumnHeaderClick={handleColumnHeaderClick}
           />
         </div>
       )}
