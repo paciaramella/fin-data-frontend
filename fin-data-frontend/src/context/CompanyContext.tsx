@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
-import { FinancialInsightsInfo } from "../types/company.tsx";
+import { FinancialInsightsInfo, SimpleQuote } from "../types/company.tsx";
 
 interface CompanyState {
   companyProfile: any;
@@ -23,6 +23,7 @@ interface CompanyApi {
   // api functions
   getCompanyProfile: (symbol: string) => Promise<void>;
   getCompanyFinancials: (companyInfo: FinancialInsightsInfo) => Promise<void>;
+  getCompanyPrice: (symbol: string) => Promise<SimpleQuote>;
 }
 
 interface CompanyContextType {
@@ -39,6 +40,11 @@ const defaultCompanyState: CompanyState = {
   keyMetrics: [],
 };
 
+const defaultSimpleQuote: SimpleQuote = {
+  price: 0,
+  volume: 0,
+  symbol: "",
+};
 const defaultCompanyApi: CompanyApi = {
   setCompanyProfile: (companyProfile: any) => {},
   setShowInsights: (showInsights: boolean) => {},
@@ -48,6 +54,7 @@ const defaultCompanyApi: CompanyApi = {
   setKeyMetrics: (keyMetrics: Array<any>) => {},
   getCompanyProfile: async (symbol: string) => {},
   getCompanyFinancials: async (companyInfo: FinancialInsightsInfo) => {},
+  getCompanyPrice: async (symbol: string) => defaultSimpleQuote,
 };
 
 const defaultCompanyContext: CompanyContextType = {
@@ -86,6 +93,22 @@ export const CompanyContextProvider = ({ children }) => {
       setCompanyProfile(response.data[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
+    }
+  };
+
+  const invokeGetCompanyPrice = async (
+    symbol: string
+  ): Promise<SimpleQuote> => {
+    try {
+      const response = await axios.get(`${url}/quote-short/${symbol}`);
+      return response.data[0];
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return {
+        price: 0,
+        volume: 0,
+        symbol: "",
+      };
     }
   };
 
@@ -152,6 +175,7 @@ export const CompanyContextProvider = ({ children }) => {
     setKeyMetrics,
     getCompanyProfile: invokeGetCompanyProfile,
     getCompanyFinancials: invokeGetCompanyFinancials,
+    getCompanyPrice: invokeGetCompanyPrice,
   };
   return (
     <CompanyContext.Provider value={{ state, api }}>

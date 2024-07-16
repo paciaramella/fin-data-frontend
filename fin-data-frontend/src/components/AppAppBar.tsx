@@ -1,17 +1,17 @@
 import * as React from "react";
 import { PaletteMode } from "@mui/material";
-import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ToggleColorMode from "./ToggleColorMode.tsx";
+import { Container, Typography, Box, Button, TextField } from "@mui/material"; // Importing additional MUI components if needed
+import { useState } from "react";
+import { CompanyContext } from "../context/CompanyContext.tsx";
 
 interface AppAppBarProps {
   mode: PaletteMode;
@@ -19,7 +19,10 @@ interface AppAppBarProps {
 }
 
 export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
+  const { state, api } = React.useContext(CompanyContext);
+  const { getCompanyProfile } = api;
   const [open, setOpen] = React.useState(false);
+  const [symbolSearch, setSymbolSearch] = useState("");
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -77,9 +80,28 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               display: { xs: "none", md: "flex" },
               gap: 0.5,
               alignItems: "center",
+              margin: "8px",
             }}
           >
-            <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
+            <TextField
+              label="Please type in a company ticker and we will get some info for you."
+              variant="outlined"
+              fullWidth
+              value={symbolSearch}
+              onChange={(e) => setSymbolSearch(e.target.value)}
+              style={{ margin: "16px" }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ margin: "16px" }}
+              onClick={() => getCompanyProfile(symbolSearch)}
+            >
+              Submit
+            </Button>
+            {/* <div style={{ marginLeft: "auto" }}>
+              <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
+            </div> */}
           </Box>
           <Box sx={{ display: { sm: "flex", md: "none" } }}>
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>

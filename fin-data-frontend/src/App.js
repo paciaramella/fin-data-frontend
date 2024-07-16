@@ -49,37 +49,10 @@ const MainComponent = () => {
           sx={{ mt: 3 }}
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <Typography variant="h5" gutterBottom>
-            Financial Data App
-          </Typography>
-          <TextField
-            label="Please type in a company ticker and we will get some info for you."
-            variant="outlined"
-            fullWidth
-            value={symbolSearch}
-            onChange={(e) => setSymbolSearch(e.target.value)}
-          />
-          {companyProfile?.companyName ? (
+          {companyProfile?.companyName && (
             <>
               <CompanyCard companyProfile={companyProfile} />
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-                onClick={clearSearch}
-              >
-                Clear
-              </Button>
             </>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2 }}
-              onClick={() => getCompanyProfile(symbolSearch)}
-            >
-              Submit
-            </Button>
           )}
         </Box>
       </Container>

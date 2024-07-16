@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -12,10 +12,10 @@ type Props = {
 
 const CompanyCard: React.FC<Props> = (props) => {
   const { api } = useContext(CompanyContext);
-  const { getCompanyFinancials } = api;
+  const { getCompanyFinancials, getCompanyPrice } = api;
   const { companyProfile } = props;
   const { companyName, symbol, price, volAvg, website } = companyProfile;
-
+  const [livePrice, setLivePrice] = useState(price);
   const financialInsightParams = {
     symbol: companyProfile.symbol,
     incomeParams: {
@@ -36,18 +36,25 @@ const CompanyCard: React.FC<Props> = (props) => {
     },
   };
 
+  useEffect(() => {
+    // resets live stock price every second
+    const interval = setInterval(async () => {
+      const newPrice = (await getCompanyPrice(symbol)).price;
+      console.log("newPrice", newPrice);
+      setLivePrice(newPrice);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Card sx={{ minWidth: 275, mt: 2, bgcolor: "background.default" }}>
       <CardContent>
-        <Typography sx={{ fontSize: 16 }} gutterBottom>
-          {companyName}
+        <Typography sx={{ fontSize: 16 }} variant="h1" gutterBottom>
+          {companyName} - {symbol}
         </Typography>
-        <Typography variant="h5" component="div"></Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {symbol}
-        </Typography>
-        <Typography variant="body1">{`Price: $${price}`}</Typography>
-        <Typography variant="body1">{`Average Volume: ${volAvg}`}</Typography>
+        <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
+        <Typography variant="h2">{`$${livePrice}`}</Typography>
+        <Typography variant="body1">{`Volume: ${volAvg}`}</Typography>
       </CardContent>
       <CardActions sx={{ display: "flex", flexDirection: "column" }}>
         <a>

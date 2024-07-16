@@ -24,3 +24,9 @@ type BasicSearchParams = {
   period?: string;
   datatype?: any;
 };
+
+export type SimpleQuote = {
+  price: any;
+  volume: any;
+  symbol: string;
+};
