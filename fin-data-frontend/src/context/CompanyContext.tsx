@@ -44,7 +44,7 @@ const defaultSimpleQuote: SimpleQuote = {
   price: 0,
   volume: 0,
   symbol: "",
-  change: "",
+  change: 0,
   changesPercentage: "",
 };
 const defaultCompanyApi: CompanyApi = {
@@ -110,7 +110,7 @@ export const CompanyContextProvider = ({ children }) => {
         price: 0,
         volume: 0,
         symbol: "",
-        change: "",
+        change: 0,
         changesPercentage: "",
       };
     }

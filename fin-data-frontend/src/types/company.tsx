@@ -29,4 +29,6 @@ export type SimpleQuote = {
   price: any;
   volume: any;
   symbol: string;
+  change: number;
+  changesPercentage: string;
 };

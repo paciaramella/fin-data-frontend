@@ -16,8 +16,9 @@ const CompanyCard: React.FC<Props> = (props) => {
   const { companyProfile } = props;
   const { companyName, symbol, price, volAvg, website } = companyProfile;
   const [livePrice, setLivePrice] = useState(price);
-  const [liveChange, setLiveChange] = useState("");
+  const [liveChange, setLiveChange] = useState(0);
   const [livePctChange, setLivePctChange] = useState("");
+  const [changeColor, setChangeColor] = useState("#28a745");
 
   const financialInsightParams = {
     symbol: companyProfile.symbol,
@@ -49,6 +50,7 @@ const CompanyCard: React.FC<Props> = (props) => {
       setLivePrice(newPrice);
       setLiveChange(newChange);
       setLivePctChange(newPercentageChange);
+      setChangeColor(newChange < 0 ? "#dc3545" : "#28a745");
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -60,7 +62,20 @@ const CompanyCard: React.FC<Props> = (props) => {
           {companyName} - {symbol}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
-        <Typography variant="h2">{`$${livePrice} ${liveChange} (${livePctChange}%)`}</Typography>
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <Typography
+            variant="h2"
+            sx={{ marginRight: "16px" }}
+          >{`$${livePrice}`}</Typography>
+          <Typography
+            color={changeColor}
+            variant="h4"
+          >{`${liveChange} (${livePctChange}%)`}</Typography>
+        </div>
         <Typography variant="body1">{`Volume: ${volAvg}`}</Typography>
       </CardContent>
       <CardActions sx={{ display: "flex", flexDirection: "column" }}>
