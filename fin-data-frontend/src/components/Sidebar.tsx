@@ -13,9 +13,9 @@ type Props = {
 
 const Sidebar: React.FC<Props> = (props) => {
   const { api } = useContext(CompanyContext);
-  const { getCompanyFinancials, getCompanyPrice } = api;
+  const { getKeyMetrics } = api;
   const { companyProfile } = props;
-  //   const { companyName, symbol, price, volAvg, website } = companyProfile;
+  const { companyName, symbol, price, volAvg, website } = companyProfile;
 
   const financialInsightParams = {
     symbol: companyProfile.symbol,
@@ -31,21 +31,44 @@ const Sidebar: React.FC<Props> = (props) => {
       period: "quarter",
       limit: 100,
     },
-    keyMetricsParams: {
-      period: "quarter",
-      limit: 100,
-    },
   };
+
+  const keyMetricsParams = {
+    symbol,
+    period: "quarter",
+    limit: 100,
+  };
+
   return (
     <List>
       <ListItem disablePadding>
-        <ListItemButton
-          onClick={() => getCompanyFinancials(financialInsightParams)}
-        >
-          <ListItemText primary="Key Metrics" sx={{ fontSize: 10 }} />
+        <ListItemButton onClick={() => getKeyMetrics(keyMetricsParams)}>
+          <ListItemText
+            primary="Key Metrics"
+            sx={{ fontSize: 10 }}
+            primaryTypographyProps={{ style: { color: "gray" } }}
+          />
         </ListItemButton>
       </ListItem>
-      <ListItem disablePadding></ListItem>
+      <ListItem disablePadding>
+        <ListItemButton>
+          <ListItemText
+            primary="Chart"
+            sx={{ fontSize: 10 }}
+            primaryTypographyProps={{ style: { color: "gray" } }}
+          />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton>
+          <ListItemText
+            primary="Financial Data"
+            sx={{ fontSize: 10 }}
+            primaryTypographyProps={{ style: { color: "gray" } }}
+            // onClick={() => getCompanyFinancials(financialInsightParams)}
+          />
+        </ListItemButton>
+      </ListItem>
     </List>
   );
 };

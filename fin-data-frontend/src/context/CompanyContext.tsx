@@ -24,6 +24,7 @@ interface CompanyApi {
   getCompanyProfile: (symbol: string) => Promise<void>;
   getCompanyFinancials: (companyInfo: FinancialInsightsInfo) => Promise<void>;
   getCompanyPrice: (symbol: string) => Promise<SimpleQuote>;
+  getKeyMetrics: (symbol: any) => Promise<void>;
 }
 
 interface CompanyContextType {
@@ -57,6 +58,7 @@ const defaultCompanyApi: CompanyApi = {
   getCompanyProfile: async (symbol: string) => {},
   getCompanyFinancials: async (companyInfo: FinancialInsightsInfo) => {},
   getCompanyPrice: async (symbol: string) => defaultSimpleQuote,
+  getKeyMetrics: async (symbol: any) => {},
 };
 
 const defaultCompanyContext: CompanyContextType = {
@@ -116,17 +118,20 @@ export const CompanyContextProvider = ({ children }) => {
     }
   };
 
+  const invokeGetKeyMetrics = async (keyMetricsParams: any) => {
+    const { symbol } = keyMetricsParams;
+    const res = await axios.get(`${url}/key-metrics/${symbol}`, {
+      params: keyMetricsParams,
+    });
+    setKeyMetrics(res.data);
+    setShowInsights(true);
+  };
+
   const invokeGetCompanyFinancials = async (
     companyInfo: FinancialInsightsInfo
   ) => {
-    const {
-      cik,
-      symbol,
-      incomeParams,
-      balanceParams,
-      cashFlowParams,
-      keyMetricsParams,
-    } = companyInfo;
+    const { cik, symbol, incomeParams, balanceParams, cashFlowParams } =
+      companyInfo;
     const promises = [];
     promises.push(
       await axios.get(`${url}/income-statement/${symbol ? symbol : cik}`, {
@@ -144,21 +149,13 @@ export const CompanyContextProvider = ({ children }) => {
         params: cashFlowParams,
       })
     );
-    promises.push(
-      await axios.get(`${url}/key-metrics/${symbol}`, {
-        params: keyMetricsParams,
-      })
-    );
     const responses: Array<any> = await Promise.all(promises);
     const incomeStatementRes = responses[0].data;
     const balanceSheetStatementRes = responses[1].data;
     const cashFlowStatementRes = responses[2].data;
-    const keyMetricsRes = responses[3].data;
     setIncomeStatements(incomeStatementRes);
     setBalanceSheets(balanceSheetStatementRes);
     setCashFlows(cashFlowStatementRes);
-    setKeyMetrics(keyMetricsRes);
-    setShowInsights(true);
   };
 
   const state = {
@@ -180,6 +177,7 @@ export const CompanyContextProvider = ({ children }) => {
     getCompanyProfile: invokeGetCompanyProfile,
     getCompanyFinancials: invokeGetCompanyFinancials,
     getCompanyPrice: invokeGetCompanyPrice,
+    getKeyMetrics: invokeGetKeyMetrics,
   };
   return (
     <CompanyContext.Provider value={{ state, api }}>

@@ -64,7 +64,7 @@ const CompanyCard: React.FC<Props> = (props) => {
   return (
     <Card
       sx={{
-        width: "85%",
+        width: "60%",
         mt: 2,
         bgcolor: "background.default",
         display: "flex",

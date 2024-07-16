@@ -15,7 +15,6 @@ const FinancialInsights: React.FC<Props> = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
-    // Handle tab change logic here, such as loading different statistics data
   };
 
   // const [definition, setDefinition] = useState("");
@@ -150,7 +149,6 @@ const FinancialInsights: React.FC<Props> = () => {
           }}
         >
           <Tab label="Key Metrics" />
-          <Tab label="Income Statements" />
         </Tabs>
       </AppBar>
       {tabIndex === 0 && (
@@ -180,7 +178,7 @@ const FinancialInsights: React.FC<Props> = () => {
           />
         </div>
       )}
-      {tabIndex === 1 && (
+      {/* {tabIndex === 1 && (
         <Grid container spacing={2}>
           <Grid item xs={4} sx={{ overflow: "auto" }}>
             <RevenueChart color={"#ffcccb"} />
@@ -192,7 +190,7 @@ const FinancialInsights: React.FC<Props> = () => {
             <RevenueChart color={"#8884d8"} />
           </Grid>
         </Grid>
-      )}
+      )} */}
     </Box>
   );
 };
