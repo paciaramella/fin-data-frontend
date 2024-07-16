@@ -1,6 +1,10 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
-import { FinancialInsightsInfo, SimpleQuote } from "../types/company.tsx";
+import {
+  ChartParams,
+  FinancialInsightsInfo,
+  SimpleQuote,
+} from "../types/company.tsx";
 
 interface CompanyState {
   companyProfile: any;
@@ -25,6 +29,7 @@ interface CompanyApi {
   getCompanyFinancials: (companyInfo: FinancialInsightsInfo) => Promise<void>;
   getCompanyPrice: (symbol: string) => Promise<SimpleQuote>;
   getKeyMetrics: (symbol: any) => Promise<void>;
+  getStockChart: (chartParams: ChartParams) => Promise<any>;
 }
 
 interface CompanyContextType {
@@ -59,6 +64,7 @@ const defaultCompanyApi: CompanyApi = {
   getCompanyFinancials: async (companyInfo: FinancialInsightsInfo) => {},
   getCompanyPrice: async (symbol: string) => defaultSimpleQuote,
   getKeyMetrics: async (symbol: any) => {},
+  getStockChart: async (chartParams: ChartParams) => [],
 };
 
 const defaultCompanyContext: CompanyContextType = {
@@ -158,6 +164,14 @@ export const CompanyContextProvider = ({ children }) => {
     setCashFlows(cashFlowStatementRes);
   };
 
+  const invokeGetStockChart = async (chartParams: ChartParams) => {
+    const { symbol, from, to, seriesType } = chartParams;
+    const response = await axios.get(
+      `${url}/historical-price-full/stock/${symbol}?from=${from}&to=${to}&serietype=${seriesType}`
+    );
+    return response;
+  };
+
   const state = {
     companyProfile,
     showInsights,
@@ -178,6 +192,7 @@ export const CompanyContextProvider = ({ children }) => {
     getCompanyFinancials: invokeGetCompanyFinancials,
     getCompanyPrice: invokeGetCompanyPrice,
     getKeyMetrics: invokeGetKeyMetrics,
+    getStockChart: invokeGetStockChart,
   };
   return (
     <CompanyContext.Provider value={{ state, api }}>

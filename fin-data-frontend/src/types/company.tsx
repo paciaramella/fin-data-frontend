@@ -32,3 +32,9 @@ export type SimpleQuote = {
   change: number;
   changesPercentage: string;
 };
+
+export type ChartParams = {
+  seriesType: string;
+  from: string;
+  to: string;
+};

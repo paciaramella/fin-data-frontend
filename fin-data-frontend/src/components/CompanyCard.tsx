@@ -12,7 +12,7 @@ type Props = {
 
 const CompanyCard: React.FC<Props> = (props) => {
   const { api } = useContext(CompanyContext);
-  const { getCompanyFinancials, getCompanyPrice } = api;
+  const { getCompanyPrice } = api;
   const { companyProfile } = props;
   const { companyName, symbol, price, volAvg, website } = companyProfile;
   const [livePrice, setLivePrice] = useState(price);
@@ -37,7 +37,7 @@ const CompanyCard: React.FC<Props> = (props) => {
 
   const CompanyLiveData = () => {
     return (
-      <>
+      <div style={{ marginTop: "24px" }}>
         <Typography sx={{ fontSize: 16 }} variant="h1" gutterBottom>
           {companyName} - {symbol}
         </Typography>
@@ -57,7 +57,7 @@ const CompanyCard: React.FC<Props> = (props) => {
           >{`${liveChange} (${livePctChange}%)`}</Typography>
         </div>
         <Typography variant="body1">{`Volume: ${volAvg}`}</Typography>
-      </>
+      </div>
     );
   };
 

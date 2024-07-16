@@ -7,13 +7,14 @@ import React, { useContext, useState, useEffect } from "react";
 import { CompanyContext } from "../context/CompanyContext.tsx";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { ChartParams } from "../types/company.tsx";
 type Props = {
   companyProfile: any;
 };
 
 const Sidebar: React.FC<Props> = (props) => {
   const { api } = useContext(CompanyContext);
-  const { getKeyMetrics } = api;
+  const { getKeyMetrics, getStockChart } = api;
   const { companyProfile } = props;
   const { companyName, symbol, price, volAvg, website } = companyProfile;
 
@@ -39,6 +40,17 @@ const Sidebar: React.FC<Props> = (props) => {
     limit: 100,
   };
 
+  const handleGetStockChart = async () => {
+    const params: ChartParams = {
+      symbol,
+      to: "2020-10-10",
+      from: "2021-10-10",
+      seriesType: "line",
+    };
+    const res = await getStockChart(params);
+    console.log("RES", res);
+  };
+
   return (
     <List>
       <ListItem disablePadding>
@@ -56,6 +68,7 @@ const Sidebar: React.FC<Props> = (props) => {
             primary="Chart"
             sx={{ fontSize: 10 }}
             primaryTypographyProps={{ style: { color: "gray" } }}
+            onClick={handleGetStockChart}
           />
         </ListItemButton>
       </ListItem>
@@ -63,6 +76,16 @@ const Sidebar: React.FC<Props> = (props) => {
         <ListItemButton>
           <ListItemText
             primary="Financial Data"
+            sx={{ fontSize: 10 }}
+            primaryTypographyProps={{ style: { color: "gray" } }}
+            // onClick={() => getCompanyFinancials(financialInsightParams)}
+          />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton>
+          <ListItemText
+            primary="Earnings"
             sx={{ fontSize: 10 }}
             primaryTypographyProps={{ style: { color: "gray" } }}
             // onClick={() => getCompanyFinancials(financialInsightParams)}
