@@ -34,6 +34,7 @@ export type SimpleQuote = {
 };
 
 export type ChartParams = {
+  symbol: string;
   seriesType: string;
   from: string;
   to: string;
