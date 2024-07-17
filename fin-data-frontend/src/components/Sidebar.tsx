@@ -48,7 +48,6 @@ const Sidebar: React.FC<Props> = (props) => {
       seriesType: "line",
     };
     const res = await getStockChart(params);
-    console.log("RES", res);
   };
 
   return (

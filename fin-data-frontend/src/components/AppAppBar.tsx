@@ -21,9 +21,8 @@ interface AppAppBarProps {
 }
 
 export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
-  const { state, api } = React.useContext(CompanyContext);
-  const { state: newsState, api: newsApi } = React.useContext(NewsContext);
-  const { generalNews } = newsState;
+  const { api } = React.useContext(CompanyContext);
+  const { api: newsApi } = React.useContext(NewsContext);
   const { getNewsFeed } = newsApi;
   const { getCompanyProfile } = api;
   // const [open, setOpen] = React.useState(false);
@@ -43,7 +42,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
 
   const newsItems = [
     {
-      label: "News",
+      label: "Feed",
       action: () => getNews(0),
     },
     {
