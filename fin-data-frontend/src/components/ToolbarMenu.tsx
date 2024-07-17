@@ -26,7 +26,7 @@ const ToolbarMenu: React.FC<Props> = (props) => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        News
+        {id}
       </Button>
       <Menu
         id={`${id}-menu`}

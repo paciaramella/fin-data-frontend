@@ -7,7 +7,6 @@ import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ToggleColorMode from "./ToggleColorMode.tsx";
 import { Container, Typography, Box, Button, TextField } from "@mui/material"; // Importing additional MUI components if needed
 import { useState } from "react";
@@ -23,12 +22,9 @@ interface AppAppBarProps {
 export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const { state, api } = React.useContext(CompanyContext);
   const { getCompanyProfile } = api;
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
   const [symbolSearch, setSymbolSearch] = useState("");
   const [newsAnchorEl, setNewsAnchorEl] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [earnAnchorEl, setEarnAnchorEl] = React.useState<null | HTMLElement>(
     null
   );
   const handleNewsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,24 +55,64 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
     },
   ];
 
+  const [earnAnchorEl, setEarnAnchorEl] = React.useState<null | HTMLElement>(
+    null
+  );
   const handleEarnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setEarnAnchorEl(event.currentTarget);
   };
   const earnOpen = Boolean(earnAnchorEl);
+  const earnItems = [
+    {
+      label: "Upcoming Earnings",
+      action: () => setNewsAnchorEl(null),
+    },
+    {
+      label: "Past Earnings",
+      action: () => setNewsAnchorEl(null),
+    },
+    {
+      label: "Individual earnings",
+      action: () => setNewsAnchorEl(null),
+    },
+  ];
 
-  const scrollToSection = (sectionId: string) => {
-    const sectionElement = document.getElementById(sectionId);
-    const offset = 128;
-    if (sectionElement) {
-      const targetScroll = sectionElement.offsetTop - offset;
-      sectionElement.scrollIntoView({ behavior: "smooth" });
-      window.scrollTo({
-        top: targetScroll,
-        behavior: "smooth",
-      });
-      setOpen(false);
-    }
+  const [ipoAnchorEl, setIPOAnchorEl] = React.useState<null | HTMLElement>(
+    null
+  );
+  const handleIPOClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setIPOAnchorEl(event.currentTarget);
   };
+
+  const ipoOpen = Boolean(ipoAnchorEl);
+  const ipotems = [
+    {
+      label: "IPO Confirmed",
+      action: () => setIPOAnchorEl(null),
+    },
+    {
+      label: "IPO Prospectus",
+      action: () => setIPOAnchorEl(null),
+    },
+    {
+      label: "IPO Calendar",
+      action: () => setIPOAnchorEl(null),
+    },
+  ];
+
+  // const scrollToSection = (sectionId: string) => {
+  //   const sectionElement = document.getElementById(sectionId);
+  //   const offset = 128;
+  //   if (sectionElement) {
+  //     const targetScroll = sectionElement.offsetTop - offset;
+  //     sectionElement.scrollIntoView({ behavior: "smooth" });
+  //     window.scrollTo({
+  //       top: targetScroll,
+  //       behavior: "smooth",
+  //     });
+  //     setOpen(false);
+  //   }
+  // };
 
   return (
     <AppBar
@@ -123,12 +159,15 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               Investor Insights
             </Typography>
             <TextField
-              label="Please type in a company ticker and we will get some info for you."
+              label="Enter Symbol/Ticker"
               variant="outlined"
               fullWidth
               value={symbolSearch}
               onChange={(e) => setSymbolSearch(e.target.value)}
               style={{ margin: "16px" }}
+              InputLabelProps={{
+                sx: {},
+              }}
             />
             <Button
               variant="outlined"
@@ -138,13 +177,31 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               Search
             </Button>
             <ToolbarMenu
-              id="news"
+              id="News"
               open={newsOpen}
               handleClick={handleNewsClick}
               anchorEl={newsAnchorEl}
               setAnchorEl={setNewsAnchorEl}
               items={newsItems}
             />
+            <ToolbarMenu
+              id="Earnings"
+              open={earnOpen}
+              handleClick={handleEarnClick}
+              anchorEl={earnAnchorEl}
+              setAnchorEl={setEarnAnchorEl}
+              items={earnItems}
+            />
+            <ToolbarMenu
+              id="IPOs"
+              open={ipoOpen}
+              handleClick={handleIPOClick}
+              anchorEl={ipoAnchorEl}
+              setAnchorEl={setIPOAnchorEl}
+              items={ipotems}
+            />
+            <Button sx={{ width: "150px" }}>Index Perf</Button>
+            <Button sx={{ width: "150px" }}>Economics</Button>
           </Box>
         </Toolbar>
       </Container>
