@@ -17,6 +17,20 @@ type Props = {
 };
 const ToolbarMenu: React.FC<Props> = (props) => {
   const { id, open, handleClick, anchorEl, setAnchorEl, items } = props;
+  const { state, api } = React.useContext(CompanyContext);
+  const { companyProfile } = state;
+  const { setCompanyProfile } = api;
+
+  const closeMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const doAction = (action: Function) => {
+    if (companyProfile) {
+      setCompanyProfile(null);
+    }
+    action();
+  };
   return (
     <>
       <Button
@@ -32,11 +46,13 @@ const ToolbarMenu: React.FC<Props> = (props) => {
         id={`${id}-menu`}
         anchorEl={anchorEl}
         open={open}
-        onClose={() => setAnchorEl(null)}
+        onClose={() => closeMenu()}
       >
         {items.map((item: { label: string; action: Function }) => {
           return (
-            <MenuItem onClick={() => item.action()}>{item.label}</MenuItem>
+            <MenuItem onClick={() => doAction(item.action)}>
+              {item.label}
+            </MenuItem>
           );
         })}
       </Menu>

@@ -31,11 +31,11 @@ const MainComponent = () => {
           {companyProfile?.companyName && (
             <>
               <CompanyCard companyProfile={companyProfile} />
+              {showInsights && <FinancialInsights />}
             </>
           )}
         </Box>
       </Container>
-      {showInsights && <FinancialInsights />}
     </ThemeProvider>
   );
 };

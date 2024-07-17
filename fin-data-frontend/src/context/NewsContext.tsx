@@ -52,7 +52,8 @@ export const NewsContextProvider = ({ children }) => {
     const response = await axios.get(
       `${url}/stock-news-sentiments-rss-feed?page=${page}`
     );
-    console.log(response);
+    const news = response.data;
+    setGeneralNews(news);
   };
   const state = {
     generalNews,
