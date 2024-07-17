@@ -12,6 +12,8 @@ import ToggleColorMode from "./ToggleColorMode.tsx";
 import { Container, Typography, Box, Button, TextField } from "@mui/material"; // Importing additional MUI components if needed
 import { useState } from "react";
 import { CompanyContext } from "../context/CompanyContext.tsx";
+import Menu from "@mui/material/Menu";
+import ToolbarMenu from "./ToolbarMenu.tsx";
 
 interface AppAppBarProps {
   mode: PaletteMode;
@@ -23,10 +25,44 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const { getCompanyProfile } = api;
   const [open, setOpen] = React.useState(false);
   const [symbolSearch, setSymbolSearch] = useState("");
-
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
+  const [newsAnchorEl, setNewsAnchorEl] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [earnAnchorEl, setEarnAnchorEl] = React.useState<null | HTMLElement>(
+    null
+  );
+  const handleNewsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setNewsAnchorEl(event.currentTarget);
   };
+  const newsOpen = Boolean(newsAnchorEl);
+
+  const newsItems = [
+    {
+      label: "News",
+      action: () => setNewsAnchorEl(null),
+    },
+    {
+      label: "Stock",
+      action: () => setNewsAnchorEl(null),
+    },
+    {
+      label: "Forex",
+      action: () => setNewsAnchorEl(null),
+    },
+    {
+      label: "Crypto",
+      action: () => setNewsAnchorEl(null),
+    },
+    {
+      label: "Press Releases",
+      action: () => setNewsAnchorEl(null),
+    },
+  ];
+
+  const handleEarnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setEarnAnchorEl(event.currentTarget);
+  };
+  const earnOpen = Boolean(earnAnchorEl);
 
   const scrollToSection = (sectionId: string) => {
     const sectionElement = document.getElementById(sectionId);
@@ -83,6 +119,9 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               margin: "8px",
             }}
           >
+            <Typography variant="h2" fontSize={16}>
+              Investor Insights
+            </Typography>
             <TextField
               label="Please type in a company ticker and we will get some info for you."
               variant="outlined"
@@ -92,64 +131,20 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
               style={{ margin: "16px" }}
             />
             <Button
-              variant="contained"
-              color="primary"
+              variant="outlined"
               style={{ margin: "16px" }}
               onClick={() => getCompanyProfile(symbolSearch)}
             >
-              Submit
+              Search
             </Button>
-            {/* <div style={{ marginLeft: "auto" }}>
-              <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-            </div> */}
-          </Box>
-          <Box sx={{ display: { sm: "flex", md: "none" } }}>
-            <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
-              <MenuIcon />
-            </IconButton>
-            <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
-              <Box sx={{ p: 2, backgroundColor: "background.default" }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <ToggleColorMode
-                    mode={mode}
-                    toggleColorMode={toggleColorMode}
-                  />
-                  <IconButton onClick={toggleDrawer(false)}>
-                    <CloseRoundedIcon />
-                  </IconButton>
-                </Box>
-                <Divider sx={{ my: 3 }} />
-                <MenuItem onClick={() => scrollToSection("features")}>
-                  Features
-                </MenuItem>
-                <MenuItem onClick={() => scrollToSection("testimonials")}>
-                  Testimonials
-                </MenuItem>
-                <MenuItem onClick={() => scrollToSection("highlights")}>
-                  Highlights
-                </MenuItem>
-                <MenuItem onClick={() => scrollToSection("pricing")}>
-                  Pricing
-                </MenuItem>
-                <MenuItem onClick={() => scrollToSection("faq")}>FAQ</MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth>
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
-                  </Button>
-                </MenuItem>
-              </Box>
-            </Drawer>
+            <ToolbarMenu
+              id="news"
+              open={newsOpen}
+              handleClick={handleNewsClick}
+              anchorEl={newsAnchorEl}
+              setAnchorEl={setNewsAnchorEl}
+              items={newsItems}
+            />
           </Box>
         </Toolbar>
       </Container>

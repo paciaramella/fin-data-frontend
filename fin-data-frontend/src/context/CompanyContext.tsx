@@ -167,7 +167,7 @@ export const CompanyContextProvider = ({ children }) => {
   const invokeGetStockChart = async (chartParams: ChartParams) => {
     const { symbol, from, to, seriesType } = chartParams;
     const response = await axios.get(
-      `${url}/historical-price-full/stock/${symbol}?from=${from}&to=${to}&serietype=${seriesType}`
+      `${url}/historical-price-full/${symbol}?from=${from}&to=${to}&serietype=${seriesType}`
     );
     return response;
   };
