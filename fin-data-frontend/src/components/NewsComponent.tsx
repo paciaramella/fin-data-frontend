@@ -45,6 +45,9 @@ const NewsComponent: React.FC<Props> = (props) => {
   };
   return (
     <>
+      <Typography fontSize={24} fontWeight={700} sx={{ margin: "16px" }}>
+        <i>What's new</i>
+      </Typography>
       {generalNews.length > 0 && (
         <Grid container spacing={2}>
           {generalNews.slice(0, 10).map((newsObj: any) => {
