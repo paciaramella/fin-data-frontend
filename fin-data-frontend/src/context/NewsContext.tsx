@@ -11,7 +11,11 @@ interface NewsState {
 }
 
 interface NewsApi {
+  /* State Hooks */
   setGeneralNews: (generalNews: Array<any>) => void;
+
+  /* API Calls */
+  getNewsFeed: (page: number) => void;
 }
 
 interface NewsContextType {
@@ -24,7 +28,10 @@ const defaultNewsState: NewsState = {
 };
 
 const defaultNewsApi: NewsApi = {
+  /* State Hooks */
   setGeneralNews: (generalNews: any) => {},
+  /* API Calls */
+  getNewsFeed: (page: number) => {},
 };
 
 const defaultNewsContext: NewsContextType = {
@@ -39,11 +46,20 @@ export const NewsContextProvider = ({ children }) => {
   const url = "http://127.0.0.1:5000";
   const { generalNews: defaultGeneralNews } = defaultNewsState;
   const [generalNews, setGeneralNews] = useState(defaultGeneralNews);
+
+  /* API Calls */
+  const invokeGetNewsFeed = async (page: number) => {
+    const response = await axios.get(
+      `${url}/stock-news-sentiments-rss-feed?page=${page}`
+    );
+    console.log(response);
+  };
   const state = {
     generalNews,
   };
   const api = {
     setGeneralNews,
+    getNewsFeed: invokeGetNewsFeed,
   };
 
   return (

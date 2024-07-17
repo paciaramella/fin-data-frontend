@@ -13,6 +13,7 @@ import { useState } from "react";
 import { CompanyContext } from "../context/CompanyContext.tsx";
 import Menu from "@mui/material/Menu";
 import ToolbarMenu from "./ToolbarMenu.tsx";
+import { NewsContext } from "../context/NewsContext.tsx";
 
 interface AppAppBarProps {
   mode: PaletteMode;
@@ -21,6 +22,8 @@ interface AppAppBarProps {
 
 export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const { state, api } = React.useContext(CompanyContext);
+  const { state: newsState, api: newsApi } = React.useContext(NewsContext);
+  const { getNewsFeed } = newsApi;
   const { getCompanyProfile } = api;
   // const [open, setOpen] = React.useState(false);
   const [symbolSearch, setSymbolSearch] = useState("");
@@ -32,10 +35,15 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   };
   const newsOpen = Boolean(newsAnchorEl);
 
+  const getNews = async (page: number) => {
+    await getNewsFeed(page);
+    setNewsAnchorEl(null);
+  };
+
   const newsItems = [
     {
       label: "News",
-      action: () => setNewsAnchorEl(null),
+      action: () => getNews(0),
     },
     {
       label: "Stock",
