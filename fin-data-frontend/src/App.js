@@ -1,16 +1,10 @@
 import React, { useState, useContext } from "react";
-import TextField from "@mui/material/TextField";
-import {
-  Container,
-  Typography,
-  Box,
-  Button,
-  ThemeProvider,
-} from "@mui/material"; // Importing additional MUI components if needed
+import { Container, Box, ThemeProvider } from "@mui/material"; // Importing additional MUI components if needed
 import {
   CompanyContext,
   CompanyContextProvider,
 } from "./context/CompanyContext.tsx";
+import { NewsContextProvider } from "./context/NewsContext.tsx";
 import CompanyCard from "./components/CompanyCard.tsx";
 import FinancialInsights from "./components/FinancialInsights.tsx";
 import getLPTheme from "./theme.tsx";
@@ -49,9 +43,11 @@ const MainComponent = () => {
 function App() {
   return (
     <CompanyContextProvider>
-      <div style={{ bgcolor: "background.default" }}>
-        <MainComponent />
-      </div>
+      <NewsContextProvider>
+        <div style={{ bgcolor: "background.default" }}>
+          <MainComponent />
+        </div>
+      </NewsContextProvider>
     </CompanyContextProvider>
   );
 }
