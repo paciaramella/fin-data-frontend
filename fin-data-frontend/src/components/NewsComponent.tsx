@@ -14,7 +14,7 @@ const NewsComponent: React.FC<Props> = (props) => {
   const { generalNews } = props;
   const NewsCard = (props: { newsObj: any }) => {
     const { newsObj } = props;
-    const { image, publishedDate, url, title, symbol } = newsObj;
+    const { image, publishedDate, url, title, symbol, site } = newsObj;
     const date = new Date(publishedDate);
     return (
       <Card
@@ -27,7 +27,7 @@ const NewsComponent: React.FC<Props> = (props) => {
       >
         <CardContent>
           <Typography color={"gray"} fontWeight={700} sx={{ margin: "8px" }}>
-            {symbol}
+            {symbol} - <i>{site}</i>
           </Typography>
           <img
             src={image}

@@ -14,7 +14,7 @@ const CompanyCard: React.FC<Props> = (props) => {
   const { api } = useContext(CompanyContext);
   const { getCompanyPrice } = api;
   const { companyProfile } = props;
-  const { companyName, symbol, price, volAvg, website } = companyProfile;
+  const { companyName, symbol, price, volAvg } = companyProfile;
   const [livePrice, setLivePrice] = useState(price);
   const [liveChange, setLiveChange] = useState(0);
   const [livePctChange, setLivePctChange] = useState("");
