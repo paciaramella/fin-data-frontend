@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Container, Box, ThemeProvider } from "@mui/material"; // Importing additional MUI components if needed
 import { CompanyContext } from "../context/CompanyContext.tsx";
 import { NewsContext } from "../context/NewsContext.tsx";
@@ -9,13 +9,28 @@ import { createTheme } from "@mui/material/styles";
 import AppAppBar from "../components/AppAppBar.tsx";
 import CssBaseline from "@mui/material/CssBaseline";
 import NewsComponent from "../components/NewsComponent.tsx";
+import { EarningsContext } from "../context/EarningsContext.tsx";
+import EarningsComponent from "./EarningsComponent.tsx";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import StockPriceChart from "./StockPriceChart.tsx";
 
 const MainComponent = () => {
   const LPtheme = createTheme(getLPTheme("dark"));
   const { state } = useContext(CompanyContext);
   const { state: newsState } = useContext(NewsContext);
+  const { state: earningsState } = useContext(EarningsContext);
   const { generalNews } = newsState;
-  const { companyProfile, showInsights } = state;
+  const { companyProfile, showInsights, stockPriceChart } = state;
+  const { upcomingEarnings } = earningsState;
+
+  const [openStockChart, setOpenStockChart] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (stockPriceChart.length > 0) {
+      setOpenStockChart(true);
+    }
+  }, [stockPriceChart]);
   return (
     <ThemeProvider theme={LPtheme}>
       <CssBaseline />
@@ -32,7 +47,13 @@ const MainComponent = () => {
         {generalNews && generalNews.length > 0 && (
           <NewsComponent generalNews={generalNews} />
         )}
+        {upcomingEarnings && upcomingEarnings.length > 0 && (
+          <EarningsComponent />
+        )}
       </Container>
+      <Modal open={openStockChart} onClose={() => setOpenStockChart(false)}>
+        <StockPriceChart data={stockPriceChart} />
+      </Modal>
     </ThemeProvider>
   );
 };

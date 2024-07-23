@@ -47,7 +47,7 @@ const Sidebar: React.FC<Props> = (props) => {
       from: "2021-10-10",
       seriesType: "line",
     };
-    const res = await getStockChart(params);
+    await getStockChart(params);
   };
 
   return (

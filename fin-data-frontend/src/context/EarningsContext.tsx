@@ -15,6 +15,7 @@ interface EarningsApi {
   setUpcomingEarnings: (upcomingEarnings: Array<any>) => void;
 
   /* API Calls */
+  getEarnings: (fromDate: string, toDate: string) => void;
 }
 
 interface EarningsContextType {
@@ -30,6 +31,7 @@ const defaultEarningsApi: EarningsApi = {
   /* State Hooks */
   setUpcomingEarnings: (upcomingEarnings: any) => {},
   /* API Calls */
+  getEarnings: (fromDate: string, toDate: string) => {},
 };
 
 const defaultEarningsContext: EarningsContextType = {
@@ -50,11 +52,24 @@ export const EarningsContextProvider = ({ children }) => {
   );
 
   /* API Calls */
+  const invokeGetEarningsCalendar = async (
+    fromDate: string,
+    toDate: string
+  ) => {
+    const response = await axios.get(
+      `${url}/earning_calendar?from=${fromDate}&to=${toDate}`
+    );
+    const earnings = response.data.map((report: any) => {
+      return { date: report.date, symbol: report.symbol };
+    });
+    setUpcomingEarnings(earnings);
+  };
   const state = {
     upcomingEarnings,
   };
   const api = {
     setUpcomingEarnings,
+    getEarnings: invokeGetEarningsCalendar,
   };
 
   return (

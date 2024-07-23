@@ -13,6 +13,7 @@ interface CompanyState {
   balanceSheets: Array<any>;
   cashFlows: Array<any>;
   keyMetrics: Array<any>;
+  stockPriceChart: Array<any>;
 }
 
 interface CompanyApi {
@@ -23,6 +24,7 @@ interface CompanyApi {
   setBalanceSheets: (balanceSheets: Array<any>) => void;
   setCashFlows: (cashFlows: Array<any>) => void;
   setKeyMetrics: (keyMetrics: Array<any>) => void;
+  setStockPriceChart: (stockPriceChart: Array<any>) => void;
 
   // api functions
   getCompanyProfile: (symbol: string) => Promise<void>;
@@ -44,6 +46,7 @@ const defaultCompanyState: CompanyState = {
   balanceSheets: [],
   cashFlows: [],
   keyMetrics: [],
+  stockPriceChart: [],
 };
 
 const defaultSimpleQuote: SimpleQuote = {
@@ -60,6 +63,7 @@ const defaultCompanyApi: CompanyApi = {
   setBalanceSheets: (balanceSheets: Array<any>) => {},
   setCashFlows: (cashFlows: Array<any>) => {},
   setKeyMetrics: (keyMetrics: Array<any>) => {},
+  setStockPriceChart: (stockPriceChart: Array<any>) => {},
   getCompanyProfile: async (symbol: string) => {},
   getCompanyFinancials: async (companyInfo: FinancialInsightsInfo) => {},
   getCompanyPrice: async (symbol: string) => defaultSimpleQuote,
@@ -86,6 +90,7 @@ export const CompanyContextProvider = ({ children }) => {
     balanceSheets: defaultBalanceSheets,
     cashFlows: defaultCashFlows,
     keyMetrics: defaultKeyMetrics,
+    stockPriceChart: defaultStockPriceChart,
   } = defaultCompanyState;
   const [companyProfile, setCompanyProfile] = useState(defaultCompanyProfile);
   const [showInsights, setShowInsights] = useState(defaultShowInsights);
@@ -96,6 +101,9 @@ export const CompanyContextProvider = ({ children }) => {
     useState<Array<any>>(defaultBalanceSheets);
   const [cashFlows, setCashFlows] = useState<Array<any>>(defaultCashFlows);
   const [keyMetrics, setKeyMetrics] = useState<Array<any>>(defaultKeyMetrics);
+  const [stockPriceChart, setStockPriceChart] = useState<Array<any>>(
+    defaultStockPriceChart
+  );
 
   const invokeGetCompanyProfile = async (symbol: string) => {
     try {
@@ -169,7 +177,8 @@ export const CompanyContextProvider = ({ children }) => {
     const response = await axios.get(
       `${url}/historical-price-full/${symbol}?from=${from}&to=${to}&serietype=${seriesType}`
     );
-    return response;
+    const data = response.data?.historical;
+    setStockPriceChart(data);
   };
 
   const state = {
@@ -179,6 +188,7 @@ export const CompanyContextProvider = ({ children }) => {
     balanceSheets,
     cashFlows,
     keyMetrics,
+    stockPriceChart,
   };
 
   const api = {
@@ -188,6 +198,7 @@ export const CompanyContextProvider = ({ children }) => {
     setBalanceSheets,
     setCashFlows,
     setKeyMetrics,
+    setStockPriceChart,
     getCompanyProfile: invokeGetCompanyProfile,
     getCompanyFinancials: invokeGetCompanyFinancials,
     getCompanyPrice: invokeGetCompanyPrice,

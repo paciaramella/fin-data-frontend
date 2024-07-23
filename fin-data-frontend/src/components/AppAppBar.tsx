@@ -14,6 +14,7 @@ import { CompanyContext } from "../context/CompanyContext.tsx";
 import Menu from "@mui/material/Menu";
 import ToolbarMenu from "./ToolbarMenu.tsx";
 import { NewsContext } from "../context/NewsContext.tsx";
+import { EarningsContext } from "../context/EarningsContext.tsx";
 
 interface AppAppBarProps {
   mode: PaletteMode;
@@ -23,8 +24,10 @@ interface AppAppBarProps {
 export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   const { api } = React.useContext(CompanyContext);
   const { api: newsApi } = React.useContext(NewsContext);
+  const { api: earningsApi } = React.useContext(EarningsContext);
   const { getNewsFeed } = newsApi;
   const { getCompanyProfile } = api;
+  const { getEarnings } = earningsApi;
   // const [open, setOpen] = React.useState(false);
   const [symbolSearch, setSymbolSearch] = useState("");
   const [newsAnchorEl, setNewsAnchorEl] = React.useState<null | HTMLElement>(
@@ -70,10 +73,44 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
     setEarnAnchorEl(event.currentTarget);
   };
   const earnOpen = Boolean(earnAnchorEl);
+
+  const getUpcomingEarnings = async (
+    fromDateString: string,
+    toDateString: string
+  ) => {
+    await getEarnings(fromDateString, toDateString);
+  };
+
+  const setDefaultDatesForEarnings = () => {
+    const defaultFromDate = new Date();
+    const defaultToDate = new Date(
+      defaultFromDate.getFullYear(),
+      (defaultFromDate.getMonth() % 4) + 4,
+      31,
+      23,
+      69,
+      69,
+      999
+    ).toISOString(); // end of year
+    const fromDateString = defaultFromDate
+      .toISOString()
+      .substring(0, defaultFromDate.toISOString().indexOf("T"));
+    const toDateString = defaultToDate.substring(0, defaultToDate.indexOf("T"));
+    return { fromDateString, toDateString };
+  };
+
+  const invokeGetUpcomingEarnings = () => {
+    const res = setDefaultDatesForEarnings();
+    const fromDateString = res.fromDateString;
+    const toDateString = res.toDateString;
+    setNewsAnchorEl(null);
+    getUpcomingEarnings(fromDateString, toDateString);
+  };
+
   const earnItems = [
     {
       label: "Upcoming Earnings",
-      action: () => setNewsAnchorEl(null),
+      action: () => invokeGetUpcomingEarnings(),
     },
     {
       label: "Past Earnings",
@@ -164,7 +201,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
             }}
           >
             <Typography variant="h2" fontSize={16}>
-              Investor Insights
+              Finsider
             </Typography>
             <TextField
               label="Enter Symbol/Ticker"
