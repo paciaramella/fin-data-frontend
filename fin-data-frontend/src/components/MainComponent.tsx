@@ -11,9 +11,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import NewsComponent from "../components/NewsComponent.tsx";
 import { EarningsContext } from "../context/EarningsContext.tsx";
 import EarningsComponent from "./EarningsComponent.tsx";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import StockPriceChart from "./StockPriceChart.tsx";
+// import Typography from "@mui/material/Typography";
+// import Modal from "@mui/material/Modal";
+// import StockPriceChart from "./StockPriceChart.tsx";
+import HomePage from "./Home/HomePage.tsx";
+import HomeSidebar from "./Home/HomeSidebar.tsx";
 
 const MainComponent = () => {
   const LPtheme = createTheme(getLPTheme("dark"));
@@ -24,36 +26,39 @@ const MainComponent = () => {
   const { companyProfile, showInsights, stockPriceChart } = state;
   const { upcomingEarnings } = earningsState;
 
-  const [openStockChart, setOpenStockChart] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (stockPriceChart.length > 0) {
-      setOpenStockChart(true);
-    }
-  }, [stockPriceChart]);
+  // const [openStockChart, setOpenStockChart] = useState<boolean>(false);
+  // useEffect(() => {
+  //   if (stockPriceChart.length > 0) {
+  //     setOpenStockChart(true);
+  //   }
+  // }, [stockPriceChart]);
   return (
     <ThemeProvider theme={LPtheme}>
       <CssBaseline />
       <AppAppBar mode={"dark"} toggleColorMode={() => {}} />
-      <Container sx={{ bgcolor: "background.default", padding: "100px" }}>
-        <Box style={{ display: "flex", flexDirection: "column" }}>
-          {companyProfile?.companyName && (
-            <>
-              <CompanyCard companyProfile={companyProfile} />
-              {showInsights && <FinancialInsights />}
-            </>
+      <div style={{ display: "flex" }}>
+        <HomeSidebar />
+        <Container sx={{ bgcolor: "background.default", padding: "100px" }}>
+          <HomePage />
+          <Box style={{ display: "flex", flexDirection: "column" }}>
+            {companyProfile?.companyName && (
+              <>
+                <CompanyCard companyProfile={companyProfile} />
+                {showInsights && <FinancialInsights />}
+              </>
+            )}
+          </Box>
+          {generalNews && generalNews.length > 0 && (
+            <NewsComponent generalNews={generalNews} />
           )}
-        </Box>
-        {generalNews && generalNews.length > 0 && (
-          <NewsComponent generalNews={generalNews} />
-        )}
-        {upcomingEarnings && upcomingEarnings.length > 0 && (
-          <EarningsComponent />
-        )}
-      </Container>
-      <Modal open={openStockChart} onClose={() => setOpenStockChart(false)}>
+          {upcomingEarnings && upcomingEarnings.length > 0 && (
+            <EarningsComponent />
+          )}
+        </Container>
+      </div>
+      {/* <Modal open={openStockChart} onClose={() => setOpenStockChart(false)}>
         <StockPriceChart data={stockPriceChart} />
-      </Modal>
+      </Modal> */}
     </ThemeProvider>
   );
 };
