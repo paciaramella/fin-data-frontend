@@ -12,13 +12,31 @@ const HomeSidebar: React.FC<Props> = () => {
   return (
     <List
       sx={{
-        width: "100px",
+        width: "120px",
         height: "100%",
         background: "#4F1502",
-        borderRadius: "8px",
+        borderRadius: "4px",
         marginTop: "115px",
       }}
     >
+      <ListItem disablePadding>
+        <ListItemButton>
+          <ListItemText
+            primary="Markets"
+            sx={{ fontSize: 10 }}
+            primaryTypographyProps={{ style: { color: "white" } }}
+          />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton>
+          <ListItemText
+            primary="Financial Statements"
+            sx={{ fontSize: 10 }}
+            primaryTypographyProps={{ style: { color: "white" } }}
+          />
+        </ListItemButton>
+      </ListItem>
       <ListItem disablePadding>
         <ListItemButton>
           <ListItemText

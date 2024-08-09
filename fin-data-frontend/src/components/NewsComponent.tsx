@@ -3,15 +3,11 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { CompanyContext } from "../context/CompanyContext.tsx";
-import Sidebar from "./Sidebar.tsx";
 import { Grid } from "@mui/material";
-type Props = {
-  generalNews: Array<any>;
-};
-
-const NewsComponent: React.FC<Props> = (props) => {
-  const { generalNews } = props;
+import { NewsContext } from "../context/NewsContext.tsx";
+const NewsComponent = () => {
+  const { state } = useContext(NewsContext);
+  const { generalNews } = state;
   const NewsCard = (props: { newsObj: any }) => {
     const { newsObj } = props;
     const { image, publishedDate, url, title, symbol, site } = newsObj;

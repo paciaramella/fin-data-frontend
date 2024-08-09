@@ -15,6 +15,7 @@ import Menu from "@mui/material/Menu";
 import ToolbarMenu from "./ToolbarMenu.tsx";
 import { NewsContext } from "../context/NewsContext.tsx";
 import { EarningsContext } from "../context/EarningsContext.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface AppAppBarProps {
   mode: PaletteMode;
@@ -22,6 +23,7 @@ interface AppAppBarProps {
 }
 
 export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
+  const navigate = useNavigate();
   const { api } = React.useContext(CompanyContext);
   const { api: newsApi } = React.useContext(NewsContext);
   const { api: earningsApi } = React.useContext(EarningsContext);
@@ -40,6 +42,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
 
   const getNews = async (page: number) => {
     await getNewsFeed(page);
+    navigate("/news");
     setNewsAnchorEl(null);
   };
 

@@ -48,9 +48,7 @@ const MainComponent = () => {
               </>
             )}
           </Box>
-          {generalNews && generalNews.length > 0 && (
-            <NewsComponent generalNews={generalNews} />
-          )}
+          {generalNews && generalNews.length > 0 && <NewsComponent />}
           {upcomingEarnings && upcomingEarnings.length > 0 && (
             <EarningsComponent />
           )}
