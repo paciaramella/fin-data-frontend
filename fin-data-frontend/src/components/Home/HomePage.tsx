@@ -53,9 +53,19 @@ const HomePage: React.FC<Props> = (props) => {
             sx={{ display: "flex", flexDirection: "column" }}
           ></CardActions>
           <CardContent>
-            <Typography variant="h2" fontSize={16}></Typography>
+            <Typography variant="h2" fontSize={16}>
+              What's Our Goal?
+            </Typography>
             <Typography variant="h3" fontSize={14} margin={2}>
               {" "}
+              <li>
+                Finsider aims to simplify financial markets for beginners.
+              </li>
+              <li>
+                Provide resources to help users learn the absolute basics of
+                financial markets.
+              </li>
+              <li>Empower users to make educated financial decisions.</li>
             </Typography>
           </CardContent>
         </Card>

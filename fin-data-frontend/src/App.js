@@ -5,6 +5,7 @@ import { EarningsContextProvider } from "./context/EarningsContext.tsx";
 import MainComponent from "./components/MainComponent.tsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NewsComponent from "./components/NewsComponent.tsx";
+import Company from "./components/Company.tsx";
 
 const RoutingComponent = () => {
   return (
@@ -12,6 +13,7 @@ const RoutingComponent = () => {
       <Routes>
         <Route path="/" element={<MainComponent />} />
         <Route path="/news" element={<NewsComponent />} />
+        <Route path="/company/*" element={<Company />} />
       </Routes>
     </Router>
   );

@@ -162,6 +162,11 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
   //   }
   // };
 
+  const handleSearchCompany = async () => {
+    await getCompanyProfile(symbolSearch);
+    navigate(`/company/${symbolSearch}`);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -220,7 +225,7 @@ export default function AppAppBar({ mode, toggleColorMode }: AppAppBarProps) {
             <Button
               variant="outlined"
               style={{ margin: "16px" }}
-              onClick={() => getCompanyProfile(symbolSearch)}
+              onClick={handleSearchCompany}
             >
               Search
             </Button>

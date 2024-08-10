@@ -40,7 +40,7 @@ const NewsComponent = () => {
     );
   };
   return (
-    <>
+    <div style={{ backgroundColor: "background.default" }}>
       <Typography fontSize={24} fontWeight={700} sx={{ margin: "16px" }}>
         <i>What's new</i>
       </Typography>
@@ -55,7 +55,7 @@ const NewsComponent = () => {
           })}
         </Grid>
       )}
-    </>
+    </div>
   );
 };
 
